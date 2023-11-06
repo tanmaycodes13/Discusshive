@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+    {% if page == 'login' %}
+    <form method="POST" action="{% url 'login'  %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="exampleInputEmail1">Username</label>
+          <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Username" placeholder="Enter Username">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your details with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <hr>
+      <a href="{% url 'register'  %}"><button type="button" class="btn btn-success">Register User</button></a>
+      {% else %}
+      <form method="POST" action="{% url 'register'  %}">
+        <div class="form-group">
+            {% csrf_token %}
+            {{form.as_p}}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% endif %}
+</div>
+
+{% endblock content %}
+

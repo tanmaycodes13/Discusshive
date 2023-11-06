@@ -1,0 +1,38 @@
+{% extends 'main.html' %} 
+
+{% block content %}
+<style>
+    .home-container {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+<div class="home-container">
+    <div>
+        <h4>Browse Topics</h4>
+        <a href="/" class="list-group-item list-group-item-action">All</a>
+        {% for topic  in topics %}
+            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="{% url 'home' %}?q={{topic.name}}" role="tab" aria-controls="profile">{{topic}}</a>
+        {% endfor %}
+    </div>
+    <div>
+        <h4><span class="badge badge-pill badge-light">{{room_count}} rooms available</span></h4>
+        {% for room in rooms %}
+            <div class="jumbotron">
+                <h5 class="display-8">{{room.name}}</h5>
+                <p>
+                <a class="btn btn-small btn-lg" href="{% url 'room' room.id  %}" role="button">Click to take part in the discussion</a>
+                </p>
+                <hr class="my-4">
+                <p class="lead">
+                    <span>authored by : @{{room.host.username}}</span>
+                {% if request.user == room.host %}
+                <a class="btn btn-primary btn-sm" href="{% url 'update-room' room.id  %}" role="button">Update</a>
+                <a class="btn btn-primary btn-sm" href="{% url 'delete-room' room.id  %}" role="button">Delete</a>
+                {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

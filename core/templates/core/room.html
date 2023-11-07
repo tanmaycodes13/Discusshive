@@ -1,9 +1,42 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<div>
-    <h5>{{rooms.name}}</h5>
-    <small>{{rooms.description}}</small>
-</div>
+<div class="row">
+    <div class="col-sm-8">
+        <div>
+            <h5>{{rooms.name}}</h5>
+            <p>{{rooms.description}}</p>
+        </div>
+        
+        {% if request.user.is_authenticated %}
+            {% if room_messages %}
+            {% for room_message in room_messages %}
+                <div class="card">
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{room_message.body}}</p>
+                        <footer class="blockquote-footer">@{{room_message.user}}<cite title="Source Title">- {{room_message.created_at|timesince}} ago</cite></footer>
+                    </blockquote>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+            {% endif %}
+        
+            <form action="{% url 'room' rooms.id %}" method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Comments</span>
+                </div>
+                <input type="text" class="form-control" name="body" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+            </div>
+            </form>
+        {% endif %}        
+    </div>
+    <div class="col-sm-4">
+        Participants
+    </div>
+  </div>
 
 {% endblock content %}

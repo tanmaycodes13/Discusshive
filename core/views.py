@@ -68,10 +68,21 @@ def get_count(instance):
     return instance.count()
 
 
+@login_required(login_url="login")
 def room(request, pk):
     room_context = None
     room_context = Room.objects.get(id=pk)
-    return render(request, "core/room.html", context={"rooms": room_context})
+    room_messages = room_context.messages_set.all().order_by("-created_at")
+    if request.method == "POST":
+        message = Messages.objects.create(
+            user=request.user, room=room_context, body=request.POST.get("body")
+        )
+        return redirect("room", pk)
+    return render(
+        request,
+        "core/room.html",
+        context={"rooms": room_context, "room_messages": room_messages},
+    )
 
 
 @login_required(login_url="login")

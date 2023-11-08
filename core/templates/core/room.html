@@ -17,6 +17,9 @@
                         <p>{{room_message.body}}</p>
                         <footer class="blockquote-footer">@{{room_message.user}}<cite title="Source Title">- {{room_message.created_at|timesince}} ago</cite></footer>
                     </blockquote>
+                    {% if request.user == room_message.user  %}
+                        <a href="{% url 'delete-message' room_message.id %}" class="card-link">Delete</a>
+                    {% endif %}
                     </div>
                 </div>
                 <hr>
@@ -36,6 +39,9 @@
     </div>
     <div class="col-sm-4">
         Participants
+        {% for user in participants  %}
+            <p>@{{user.username}}</p>
+        {% endfor %}
     </div>
   </div>
 

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: discuss_hive:v1
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: "HOST"
+              valueFrom:
+                configMapKeyRef:
+                  key: HOST
+                  name: db-secret-credentials
+            - name: "POSTGRES_USER"
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: db-secret-credentials
+            - name: "POSTGRES_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: db-secret-credentials
+            - name: "POSTGRES_DB"
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: db-secret-credentials
+            - name: "PORT"
+              valueFrom:
+                configMapKeyRef:
+                  key: PORT
+                  name: db-secret-credentials

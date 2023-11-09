@@ -28,3 +28,4 @@ spec:
         - name: db-data
           persistentVolumeClaim:
             claimName: db-persistent-pvc
+            

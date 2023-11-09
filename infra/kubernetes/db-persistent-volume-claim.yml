@@ -10,3 +10,4 @@ spec:
     requests:
       # the PVC storage
       storage: 2Gi
+      
